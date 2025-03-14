@@ -1,10 +1,6 @@
+{% extends "base.html"%}
 {% load static%}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+{% block start %}
     <style>
       
 
@@ -226,6 +222,13 @@
 <body>
 
     <h1>Expense Tracker</h1>
+    <a  class="btn" style="background-color: brown;width: 80px;" href="{% url 'logout_view' %}" >Logout</a>
+    
+
+
+    {{request.user.first_name}}
+    {{request.user.last_name}}
+
     <div class="container">
       <div class="header">
         <img
@@ -248,13 +251,15 @@
         </div>
       </div>
       <h3>History</h3>
-      <ul id="list" class="list"></ul>
+      <ul id="list" class="list">
       {% for transaction in transactions %}
       <li class ="{% if transaction.expense_type == 'debit' %} minus {% else %} plus {% endif %}">
         {{transaction.description}} <span> {{transaction.amount}} </span>
-        <button class="delete-btn" onclick="removeTransaction(1)"><i class="fa fa-times"></i></button>
+        <a class="delete-btn" href="{% url 'delete_transaction' transaction.id %}">
+          <i class="fa fa-trash-alt"></i></a>
       </li>
         {% endfor %}
+      </ul>
         
         <h3>Add new transaction</h3>
       <form  method="POST" id="form">
@@ -278,5 +283,5 @@
       <p>Please add a description and amount</p>
     </div>
 
-</body>
-</html>
+
+    {% endblock %}
